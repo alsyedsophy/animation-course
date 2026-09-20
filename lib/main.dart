@@ -1,4 +1,4 @@
-import 'package:animations_full_course/animated_foo_widget/animated_foo_container.dart';
+import 'package:animations_full_course/app.dart';
 import 'package:animations_full_course/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Animation',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: HomePage(widget: AnimatedFooContainer()),
+      home: HomePage(widget: AnimatedFooAlign()),
     );
   }
 }
