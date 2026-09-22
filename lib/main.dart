@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Animation',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: HomePage(widget: AnimatedFooPadding()),
+      home: HomePage(widget: CustomButtonLoading()),
     );
   }
 }
