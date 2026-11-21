@@ -1,3 +1,4 @@
+import 'package:animations_full_course/counter_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,7 +25,23 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _containerWidget(),
               const Spacer(),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => CounterScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text("Go To Counter"),
+              ),
+              const SizedBox(height: 20),
               _animatedButton(),
+
               const SizedBox(height: 20),
             ],
           ),
