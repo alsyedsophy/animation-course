@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Animation',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.blue)),
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );

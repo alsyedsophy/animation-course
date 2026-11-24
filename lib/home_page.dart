@@ -1,4 +1,5 @@
 import 'package:animations_full_course/counter_screen.dart';
+import 'package:animations_full_course/foo_transition/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,20 +26,9 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _containerWidget(),
               const Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => CounterScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text("Go To Counter"),
-              ),
+              PushPageButton(page: HomeScreen(), pageName: "Home Screen"),
+              const SizedBox(height: 20),
+              PushPageButton(page: CounterScreen(), pageName: "Counter"),
               const SizedBox(height: 20),
               _animatedButton(),
 
@@ -73,6 +63,28 @@ class _HomePageState extends State<HomePage> {
       },
       style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
       child: Text("Start Animation"),
+    );
+  }
+}
+
+class PushPageButton extends StatelessWidget {
+  const PushPageButton({super.key, required this.page, required this.pageName});
+
+  final Widget page;
+  final String pageName;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => page));
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.lightBlue,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      child: Text("Go To $pageName"),
     );
   }
 }
