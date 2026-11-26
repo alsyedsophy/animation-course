@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     ).animate(_greenController);
-    
+
     _amberAnimation =
         Tween<AlignmentGeometry>(
           begin: Alignment.centerLeft,
@@ -46,13 +46,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
         );
 
-    _greenController.addStatusListener((status) {
-      if (status == AnimationStatus.completed &&
-          _amberController.status == AnimationStatus.dismissed) {
+    // _greenController.addStatusListener((status) {
+    //   if (status == AnimationStatus.completed &&
+    //       _amberController.status == AnimationStatus.dismissed) {
+    //     _amberController.forward();
+    //   }
+    //   if (status == AnimationStatus.dismissed &&
+    //       _amberController.status == AnimationStatus.completed) {
+    //     _amberController.reverse();
+    //   }
+    // });
+
+    // start move amber when green at mid
+    _greenController.addListener(() {
+      if (_greenController.value >= 0.5 && _amberController.value == 0) {
         _amberController.forward();
       }
-      if (status == AnimationStatus.dismissed &&
-          _amberController.status == AnimationStatus.completed) {
+      if (_greenController.value <= 0.5 && _amberController.value == 1) {
         _amberController.reverse();
       }
     });
