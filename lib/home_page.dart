@@ -1,5 +1,6 @@
 import 'package:animations_full_course/counter_screen.dart';
 import 'package:animations_full_course/foo_transition/home_screen.dart';
+import 'package:animations_full_course/foo_transition/remove_dispose_listner.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,6 +27,11 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _containerWidget(),
               const Spacer(),
+              PushPageButton(
+                page: RemoveDisposeListner(),
+                pageName: "Remove and Dispose Screen",
+              ),
+              const SizedBox(height: 20),
               PushPageButton(page: HomeScreen(), pageName: "Home Screen"),
               const SizedBox(height: 20),
               PushPageButton(page: CounterScreen(), pageName: "Counter"),

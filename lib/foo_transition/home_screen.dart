@@ -10,27 +10,62 @@ class HomeScreen extends StatefulWidget {
 // there is singleTickerProviderStateMixin to use single animation controller
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<AlignmentGeometry> greenAnimation;
-  late Animation<AlignmentGeometry> amberAnimation;
+  late AnimationController _greenController;
+  late AnimationController _amberController;
+  late Animation<AlignmentGeometry> _greenAnimation;
+  late Animation<AlignmentGeometry> _amberAnimation;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+    _greenController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
-      reverseDuration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
+      reverseDuration: Duration(seconds: 4),
+    );
+    _amberController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+      reverseDuration: Duration(seconds: 4),
     );
 
-    greenAnimation = Tween<AlignmentGeometry>(
+    _greenAnimation = Tween<AlignmentGeometry>(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-    ).animate(_animationController);
-    amberAnimation = Tween<AlignmentGeometry>(
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-    ).animate(_animationController);
+    ).animate(_greenController);
+
+    _amberAnimation =
+        Tween<AlignmentGeometry>(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ).animate(
+          CurvedAnimation(
+            parent: _amberController,
+            curve: Curves.easeIn,
+            reverseCurve: Curves.easeInBack,
+          ),
+        );
+
+    // _greenController.addStatusListener((status) {
+    //   if (status == AnimationStatus.completed &&
+    //       _amberController.status == AnimationStatus.dismissed) {
+    //     _amberController.forward();
+    //   }
+    //   if (status == AnimationStatus.dismissed &&
+    //       _amberController.status == AnimationStatus.completed) {
+    //     _amberController.reverse();
+    //   }
+    // });
+
+    // start move amber when green at mid
+    _greenController.addListener(() {
+      if (_greenController.value >= 0.5 && _amberController.value == 0) {
+        _amberController.forward();
+      }
+      if (_greenController.value <= 0.5 && _amberController.value == 1) {
+        _amberController.reverse();
+      }
+    });
   }
 
   @override
@@ -40,26 +75,47 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         title: Text('Foo Transistion'),
         backgroundColor: Colors.blue,
       ),
-      body: SafeArea(
-        child: Column(children: [_stackWidget(), _controlButtons()]),
-      ),
+      body: Column(children: [_stackWidget(), _controlButtons()]),
     );
   }
 
-  Wrap _controlButtons() {
-    return Wrap(
-      alignment: WrapAlignment.spaceBetween,
-      children: [
-        ElevatedButton(onPressed: () {}, child: Text("Forward")),
-        ElevatedButton(onPressed: () {}, child: Text("Reverse")),
-        ElevatedButton(onPressed: () {}, child: Text("Stop")),
-        ElevatedButton(onPressed: () {}, child: Text("Reset")),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text("Repeat (revese = false)"),
-        ),
-        ElevatedButton(onPressed: () {}, child: Text("Repeat (revese = true)")),
-      ],
+  Widget _controlButtons() {
+    return Container(
+      color: Colors.black,
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.spaceAround,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              _greenController.forward();
+            },
+            child: Text("Forward"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              _greenController.reverse();
+            },
+            child: Text("Reverse"),
+          ),
+          // ElevatedButton(
+          //   onPressed: () => _animationController.stop(),
+          //   child: Text("Stop"),
+          // ),
+          // ElevatedButton(
+          //   onPressed: () => _animationController.reset(),
+          //   child: Text("Reset"),
+          // ),
+          // ElevatedButton(
+          //   onPressed: () => _animationController.repeat(),
+          //   child: Text("Repeat (revese = false)"),
+          // ),
+          // ElevatedButton(
+          //   onPressed: () => _animationController.repeat(reverse: true),
+          //   child: Text("Repeat (revese = true)"),
+          // ),
+        ],
+      ),
     );
   }
 
@@ -68,11 +124,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Stack(
         children: [
           AlignTransition(
-            alignment: greenAnimation,
+            alignment: _greenAnimation,
             child: CircleAvatar(backgroundColor: Colors.green),
           ),
           AlignTransition(
-            alignment: amberAnimation,
+            alignment: _amberAnimation,
             child: CircleAvatar(backgroundColor: Colors.amber),
           ),
         ],
